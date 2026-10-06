@@ -1,0 +1,45 @@
+html { scroll-behavior: smooth; }
+.hero { background: radial-gradient(700px 320px at 15% 0%, rgba(45,212,191,.16), transparent 70%), radial-gradient(600px 300px at 90% 10%, rgba(251,191,36,.12), transparent 70%); border-bottom: 1px solid #1b444b; }
+
+.btn-main, .btn-ghost { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: .9rem; border-radius: .8rem; padding: .75rem 1.6rem; transition: transform .15s, filter .2s, border-color .2s; cursor: pointer; }
+.btn-main { background: #fbbf24; color: #06181c; }
+.btn-main:hover { transform: translateY(-1px); filter: brightness(1.08); }
+.btn-ghost { border: 1px solid #1b444b; color: #f4efe4; padding: .55rem 1.1rem; }
+.btn-ghost:hover { border-color: #2dd4bf; }
+.btn-main:focus-visible, .btn-ghost:focus-visible, .book:focus-visible, .chip:focus-visible, .tile:focus-visible, .nav-link:focus-visible { outline: 2px solid #2dd4bf; outline-offset: 2px; }
+
+.nav-link { padding: .4rem .8rem; border-radius: .6rem; transition: color .2s, background .2s; }
+.nav-link:hover { color: #f4efe4; background: #0d2a30; }
+
+.chip { padding: .35rem .95rem; border-radius: 999px; font-size: .8rem; font-weight: 500; color: #93b4b8; border: 1px solid #1b444b; cursor: pointer; transition: all .2s; }
+.chip:hover { border-color: #2dd4bf; }
+.chip[aria-pressed="true"] { background: #2dd4bf; border-color: #2dd4bf; color: #06181c; font-weight: 700; }
+
+/* Book cards */
+.book { display: block; text-align: left; cursor: pointer; }
+.cover { position: relative; aspect-ratio: 2 / 3; border-radius: .35rem .8rem .8rem .35rem; overflow: hidden; background: #0d2a30; border: 1px solid #1b444b; box-shadow: -4px 4px 0 rgba(0,0,0,.25); transition: transform .2s, border-color .2s; }
+.cover::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: linear-gradient(90deg, rgba(0,0,0,.4), transparent); z-index: 1; }
+.book:hover .cover { transform: translateY(-4px); border-color: #2dd4bf; }
+.cover img { width: 100%; height: 100%; object-fit: cover; }
+.nocover { height: 100%; display: flex; flex-direction: column; justify-content: center; gap: .5rem; padding: 1.1rem 1rem 1rem 1.3rem; background: linear-gradient(160deg, #123940, #0d2a30); }
+.nocover b { font-family: Fraunces, serif; font-size: .95rem; line-height: 1.2; }
+.nocover span { font-size: .72rem; color: #93b4b8; }
+.stars { position: absolute; right: .45rem; bottom: .45rem; z-index: 2; background: rgba(6,24,28,.88); color: #fbbf24; font-size: .72rem; font-weight: 700; padding: .12rem .5rem; border-radius: 999px; }
+.book h3 { margin-top: .65rem; font-size: .88rem; font-weight: 700; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.book p { font-size: .78rem; color: #93b4b8; margin-top: .15rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.row { display: flex; gap: 1.1rem; overflow-x: auto; scroll-snap-type: x proximity; padding: .3rem .3rem 1rem 0; scrollbar-width: thin; scrollbar-color: #1b444b transparent; }
+.row .book { flex: 0 0 140px; scroll-snap-align: start; }
+@media (min-width: 768px) { .row .book { flex-basis: 160px; } }
+
+.tile { display: flex; flex-direction: column; text-align: left; padding: .9rem 1rem; border-radius: .9rem; border: 1px solid #1b444b; background: #0d2a30; cursor: pointer; transition: border-color .2s, transform .15s; }
+.tile:hover { border-color: #fbbf24; transform: translateY(-2px); }
+.tile b { font-family: Fraunces, serif; font-size: 1.05rem; }
+.tile span { font-size: .75rem; color: #93b4b8; margin-top: .15rem; }
+
+.skeleton { background: linear-gradient(90deg, #0d2a30 25%, #133840 50%, #0d2a30 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: .6rem; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.tag { display: inline-block; font-size: .75rem; padding: .2rem .7rem; border: 1px solid #1b444b; border-radius: 999px; color: #c9dcdd; }
+.desc { white-space: pre-line; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

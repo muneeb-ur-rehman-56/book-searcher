@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shelfwise - Search any book in any language</title>
+<meta name="description" content="Search millions of books in any language. Browse trending books, new releases and categories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { deep: '#06181c', panel: '#0d2a30', line: '#1b444b', teal: '#2dd4bf', amber: '#fbbf24', paper: '#f4efe4', mist: '#93b4b8' },
+  fontFamily: { display: ['Fraunces', 'serif'], body: ['"Plus Jakarta Sans"', 'sans-serif'] }
+}}};
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-deep text-paper font-body antialiased">
+
+<header class="sticky top-0 z-40 backdrop-blur-md bg-deep/85 border-b border-line">
+  <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+    <a href="#" id="logo" class="font-display font-bold text-2xl tracking-tight">Shelf<span class="text-amber">wise</span></a>
+    <nav class="hidden md:flex items-center gap-1 text-sm text-mist">
+      <a class="nav-link" href="#trending">Trending</a>
+      <a class="nav-link" href="#recent">New releases</a>
+      <a class="nav-link" href="#languages">Languages</a>
+      <a class="nav-link" href="#shelves">Categories</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="max-w-4xl mx-auto px-4 pt-16 pb-14 md:pt-24 md:pb-20 text-center">
+      <h1 class="font-display font-extrabold text-4xl sm:text-5xl md:text-6xl leading-[1.05]">Every book, in every language</h1>
+      <p class="mt-5 text-mist max-w-xl mx-auto">Search millions of titles by name, author or subject. Fiction, science, poetry, history and more, in Urdu, Hindi, Punjabi, Arabic, English and over a dozen other languages.</p>
+
+      <form id="searchForm" class="mt-9 bg-panel border border-line rounded-2xl p-2 sm:p-2.5 flex flex-col sm:flex-row gap-2 shadow-2xl shadow-black/40" role="search">
+        <input id="q" type="search" autocomplete="off" placeholder="Search a title, an author or a subject"
+          class="flex-1 bg-transparent px-4 py-3 text-base placeholder-mist/70 focus:outline-none rounded-xl">
+        <div class="flex gap-2">
+          <select id="lang" aria-label="Language" class="bg-deep border border-line rounded-xl px-3 py-3 text-sm focus:outline-none focus:border-teal flex-1 sm:flex-none"></select>
+          <button class="btn-main" type="submit">Search</button>
+        </div>
+      </form>
+
+      <div class="mt-4 flex flex-wrap justify-center gap-2" id="typeChips">
+        <button type="button" class="chip" data-type="all" aria-pressed="true">Everything</button>
+        <button type="button" class="chip" data-type="title" aria-pressed="false">Title</button>
+        <button type="button" class="chip" data-type="author" aria-pressed="false">Author</button>
+        <button type="button" class="chip" data-type="subject" aria-pressed="false">Subject</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="error" class="hidden max-w-7xl mx-auto px-4 mt-6"><p class="rounded-xl border border-amber/50 bg-amber/10 text-amber px-4 py-3 text-sm"></p></div>
+
+  <section id="results" class="hidden max-w-7xl mx-auto px-4 py-10">
+    <div class="flex flex-wrap items-end justify-between gap-3 mb-6">
+      <div>
+        <h2 id="resultsTitle" class="font-display font-bold text-2xl md:text-3xl"></h2>
+        <p id="resultsCount" class="text-sm text-mist mt-1"></p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label for="sort" class="text-sm text-mist">Sort by</label>
+        <select id="sort" class="bg-panel border border-line rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-teal">
+          <option value="">Best match</option><option value="new">Newest first</option><option value="rating">Top rated</option>
+        </select>
+        <button id="backHome" class="btn-ghost">Back to home</button>
+      </div>
+    </div>
+    <div id="grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6"></div>
+    <p id="empty" class="hidden text-center text-mist py-16">No books found. Check the spelling, remove the language filter or try another word.</p>
+    <div class="text-center mt-10"><button id="loadMore" class="btn-main hidden">Load more books</button></div>
+  </section>
+
+  <div id="home" class="max-w-7xl mx-auto px-4 py-10 space-y-14">
+    <section id="trending" class="scroll-mt-24">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <h2 class="font-display font-bold text-2xl">Trending now</h2>
+        <div class="flex gap-2" id="periodChips">
+          <button class="chip" data-period="daily" aria-pressed="false">Today</button>
+          <button class="chip" data-period="weekly" aria-pressed="true">This week</button>
+          <button class="chip" data-period="monthly" aria-pressed="false">This month</button>
+        </div>
+      </div>
+      <div class="row" id="trendingRow"></div>
+    </section>
+
+    <section id="recent" class="scroll-mt-24">
+      <h2 class="font-display font-bold text-2xl mb-4">New and recent releases</h2>
+      <div class="row" id="recentRow"></div>
+    </section>
+
+    <section id="languages" class="scroll-mt-24">
+      <h2 class="font-display font-bold text-2xl mb-4">Browse by language</h2>
+      <div id="langTiles" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3"></div>
+    </section>
+
+    <div id="shelves" class="space-y-14 scroll-mt-24"></div>
+  </div>
+</main>
+
+<footer class="border-t border-line mt-10 py-8 text-center text-sm text-mist px-4">
+  <p class="font-display font-bold text-paper text-lg mb-1">Shelf<span class="text-amber">wise</span></p>
+  <p>Class project built with HTML, CSS, Tailwind and Node.js.</p>
+  <p class="mt-1">Book data and covers by <a class="underline hover:text-teal" href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>.</p>
+</footer>
+
+<div id="modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm overflow-y-auto" role="dialog" aria-modal="true" aria-label="Book details">
+  <div class="min-h-full flex items-center justify-center p-4">
+    <div id="modalBox" class="relative w-full max-w-3xl bg-panel border border-line rounded-2xl overflow-hidden">
+      <button id="closeModal" aria-label="Close" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-deep/80 hover:bg-amber hover:text-deep text-lg leading-none transition-colors">&times;</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
